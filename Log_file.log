@@ -1,0 +1,50 @@
+INFO: 05/05/2021 01:00:56 Started polling.
+DEBUG: 05/05/2021 01:00:56 Received task
+DEBUG: 05/05/2021 01:00:56 Request: method=get url=https://api.telegram.org/bot1727697640:{TOKEN}/getUpdates params={'offset': 1, 'connect-timeout': 20, 'long_polling_timeout': 20} files=None
+DEBUG: 05/05/2021 01:01:17 The server returned: 'b'{"ok":true,"result":[]}''
+DEBUG: 05/05/2021 01:01:17 Received 0 new updates
+DEBUG: 05/05/2021 01:01:17 Task complete
+INFO: 05/05/2021 01:01:17 KeyboardInterrupt received.
+INFO: 05/05/2021 01:01:17 Stopped polling.
+INFO: 05/05/2021 01:02:46 Started polling.
+DEBUG: 05/05/2021 01:02:46 Received task
+DEBUG: 05/05/2021 01:02:46 Request: method=get url=https://api.telegram.org/bot1727697640:{TOKEN}/getUpdates params={'offset': 1, 'connect-timeout': 20, 'long_polling_timeout': 20} files=None
+DEBUG: 05/05/2021 01:02:56 The server returned: 'b'{"ok":true,"result":[{"update_id":873685590,\n"message":{"message_id":118,"from":{"id":1190069449,"is_bot":false,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","language_code":"en"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216175,"text":"/start","entities":[{"offset":0,"length":6,"type":"bot_command"}]}}]}''
+DEBUG: 05/05/2021 01:02:57 Received 1 new updates
+DEBUG: 05/05/2021 01:02:57 Task complete
+DEBUG: 05/05/2021 01:02:57 Received task
+DEBUG: 05/05/2021 01:02:57 Received task
+DEBUG: 05/05/2021 01:02:57 Request: method=post url=https://api.telegram.org/bot1727697640:{TOKEN}/sendMessage params={'chat_id': '1190069449', 'text': 'Hey, welcome Bouncei.', 'reply_to_message_id': 118} files=None
+DEBUG: 05/05/2021 01:02:57 Request: method=get url=https://api.telegram.org/bot1727697640:{TOKEN}/getUpdates params={'offset': 873685591, 'connect-timeout': 20, 'long_polling_timeout': 20} files=None
+DEBUG: 05/05/2021 01:02:57 The server returned: 'b'{"ok":true,"result":{"message_id":119,"from":{"id":1727697640,"is_bot":true,"first_name":"davewaweru","username":"davewabot"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216176,"reply_to_message":{"message_id":118,"from":{"id":1190069449,"is_bot":false,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","language_code":"en"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216175,"text":"/start","entities":[{"offset":0,"length":6,"type":"bot_command"}]},"text":"Hey, welcome Bouncei."}}''
+DEBUG: 05/05/2021 01:02:57 Task complete
+DEBUG: 05/05/2021 01:02:59 The server returned: 'b'{"ok":true,"result":[{"update_id":873685591,\n"message":{"message_id":120,"from":{"id":1190069449,"is_bot":false,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","language_code":"en"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216178,"text":"/contentmessage","entities":[{"offset":0,"length":15,"type":"bot_command"}]}}]}''
+DEBUG: 05/05/2021 01:02:59 Received 1 new updates
+DEBUG: 05/05/2021 01:02:59 Task complete
+DEBUG: 05/05/2021 01:02:59 Received task
+DEBUG: 05/05/2021 01:02:59 Received task
+DEBUG: 05/05/2021 01:02:59 Request: method=post url=https://api.telegram.org/bot1727697640:{TOKEN}/sendMessage params={'chat_id': '1190069449', 'text': 'Hello Dave', 'reply_to_message_id': 120} files=None
+DEBUG: 05/05/2021 01:02:59 Request: method=get url=https://api.telegram.org/bot1727697640:{TOKEN}/getUpdates params={'offset': 873685592, 'connect-timeout': 20, 'long_polling_timeout': 20} files=None
+DEBUG: 05/05/2021 01:03:00 The server returned: 'b'{"ok":true,"result":{"message_id":121,"from":{"id":1727697640,"is_bot":true,"first_name":"davewaweru","username":"davewabot"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216179,"reply_to_message":{"message_id":120,"from":{"id":1190069449,"is_bot":false,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","language_code":"en"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216178,"text":"/contentmessage","entities":[{"offset":0,"length":15,"type":"bot_command"}]},"text":"Hello Dave"}}''
+DEBUG: 05/05/2021 01:03:00 Request: method=post url=https://api.telegram.org/bot1727697640:{TOKEN}/sendMessage params={'chat_id': '1190069449', 'text': 'What would you like to send today?'} files=None
+DEBUG: 05/05/2021 01:03:00 The server returned: 'b'{"ok":true,"result":{"message_id":122,"from":{"id":1727697640,"is_bot":true,"first_name":"davewaweru","username":"davewabot"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216179,"text":"What would you like to send today?"}}''
+DEBUG: 05/05/2021 01:03:00 Task complete
+DEBUG: 05/05/2021 01:03:05 The server returned: 'b'{"ok":true,"result":[{"update_id":873685592,\n"message":{"message_id":123,"from":{"id":1190069449,"is_bot":false,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","language_code":"en"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216184,"text":"yes\\\\"}}]}''
+DEBUG: 05/05/2021 01:03:05 Received 1 new updates
+DEBUG: 05/05/2021 01:03:05 Task complete
+DEBUG: 05/05/2021 01:03:05 Received task
+DEBUG: 05/05/2021 01:03:05 Received task
+DEBUG: 05/05/2021 01:03:05 Request: method=post url=https://api.telegram.org/bot1727697640:{TOKEN}/sendMessage params={'chat_id': '1190069449', 'text': "Do you wish to send 'yes\\' to all stored users in database?", 'reply_markup': '{"inline_keyboard": [[{"text": "Yes", "callback_data": "yes"}, {"text": "No", "callback_data": "no"}]]}'} files=None
+DEBUG: 05/05/2021 01:03:05 Request: method=get url=https://api.telegram.org/bot1727697640:{TOKEN}/getUpdates params={'offset': 873685593, 'connect-timeout': 20, 'long_polling_timeout': 20} files=None
+DEBUG: 05/05/2021 01:03:05 The server returned: 'b'{"ok":true,"result":{"message_id":124,"from":{"id":1727697640,"is_bot":true,"first_name":"davewaweru","username":"davewabot"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216184,"text":"Do you wish to send \'yes\\\\\' to all stored users in database?","reply_markup":{"inline_keyboard":[[{"text":"Yes","callback_data":"yes"},{"text":"No","callback_data":"no"}]]}}}''
+DEBUG: 05/05/2021 01:03:05 Task complete
+DEBUG: 05/05/2021 01:03:09 The server returned: 'b'{"ok":true,"result":[{"update_id":873685593,\n"callback_query":{"id":"5111309366133109742","from":{"id":1190069449,"is_bot":false,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","language_code":"en"},"message":{"message_id":124,"from":{"id":1727697640,"is_bot":true,"first_name":"davewaweru","username":"davewabot"},"chat":{"id":1190069449,"first_name":"Joshua","last_name":"Inyang","username":"Bouncei","type":"private"},"date":1620216184,"text":"Do you wish to send \'yes\\\\\' to all stored users in database?","reply_markup":{"inline_keyboard":[[{"text":"Yes","callback_data":"yes"},{"text":"No","callback_data":"no"}]]}},"chat_instance":"8170471369048253796","data":"no"}}]}''
+DEBUG: 05/05/2021 01:03:09 Received 1 new updates
+DEBUG: 05/05/2021 01:03:09 Task complete
+DEBUG: 05/05/2021 01:03:09 Received task
+DEBUG: 05/05/2021 01:03:09 Request: method=get url=https://api.telegram.org/bot1727697640:{TOKEN}/getUpdates params={'offset': 873685594, 'connect-timeout': 20, 'long_polling_timeout': 20} files=None
+INFO: 05/05/2021 01:03:18 KeyboardInterrupt received.
+INFO: 05/05/2021 01:03:18 Stopped polling.
+DEBUG: 05/05/2021 01:03:29 The server returned: 'b'{"ok":true,"result":[]}''
+DEBUG: 05/05/2021 01:03:29 Received 0 new updates
+DEBUG: 05/05/2021 01:03:29 Task complete
