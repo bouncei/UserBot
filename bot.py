@@ -1,6 +1,24 @@
+############################################################################################################################################################################
+############################################################################################################################################################################
+
+## This code was written by Bouncei
+## Compactible with Python3 Interpreter
+
+############################################################################################################################################################################
+############################################################################################################################################################################
+
+## This is a telegram user bot that interacts only with the Admin
+## To activate the automatic forwarding of a custom message
+## To all users in the Google Sheet Database
+
+############################################################################################################################################################################
+
+
+# Importing the needed variables
 import telebot
 from telebot import TeleBot, util, types
 import logging
+import time
 
 
 ### Define Variables ###
@@ -96,16 +114,13 @@ def callback(call):
         
 
     if call.data == "image":
-        markup = types.ForceReply(selective=False)
-        q = bot.send_message(admin, "Send me the file:", reply_markup=markup)
+        forceReply()
         
     if call.data == "link":
-        markup = types.ForceReply(selective=False)
-        bot.send_message(admin, "Send me the file:", reply_markup=markup)
+       forceReply()
 
     if call.data == "text":
-        markup = types.ForceReply(selective=False)
-        bot.send_message(admin, "Send me the file:", reply_markup=markup)
+        forceReply()
         
     if call.data == 'yes':
         messageUsers()
@@ -116,7 +131,7 @@ def callback(call):
 
 def forceReply():
     markup = types.ForceReply(selective=False)
-    q = bot.send_message(admin, "Send me the file:", reply_markup=markup)
+    q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
     bot.register_next_step_handler(message=q, callback=customMessage)
 
 
@@ -132,12 +147,14 @@ def customMessage(msg):
     keyboard.add(a,b)
 
     # Save custom message
-    customText = msg.text 
+    customText = msg.get_file()
+    
+    print(customText)
 
     # Send Question
     question = bot.send_message(
         msg.from_user.id,
-        f"Do you wish to send '{msg.text}' to all stored users in database?",
+        f"Do you wish to send '{msg.document('file_name')}' to all stored users in database?",
         reply_markup=keyboard
     )
 
