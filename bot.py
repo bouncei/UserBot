@@ -69,23 +69,55 @@ def start(message):
     else:
         bot.reply_to(message, "Hello Dave")
 
-        text = "WHAT DO YOU WANT?"
+        text = "What would you like to send today?"
         mark_up = types.InlineKeyboardMarkup(row_width=2)
-        a = types.InlineKeyboardButton(text="Document", callback_data='yes')
-        b = types.InlineKeyboardButton(text="Image", callback_data='no')
-        c = types.InlineKeyboardButton(text="Link", callback_data='yes')
-        d = types.InlineKeyboardButton(text="text", callback_data='no')
+        a = types.InlineKeyboardButton(text="Document", callback_data='docs')
+        b = types.InlineKeyboardButton(text="Image", callback_data='image')
+        c = types.InlineKeyboardButton(text="Link", callback_data='link')
+        d = types.InlineKeyboardButton(text="text", callback_data='text')
         mark_up.row(a,b)
         mark_up.row(c, d)
-        bot.send_message(admin, text, reply_markup=mark_up)
+        quest = bot.send_message(admin, "What would you like send", reply_markup=mark_up)
 
-
+        # bot.register_next_step_handler(message=quest, callback=customMessage)
 
 
         # A question to the admin   
-        question = bot.send_message(admin, "What would you like to send today?")
-        bot.register_next_step_handler(message=question, callback=customMessage)
+        # question = bot.send_message(admin, "What would you like to send today?")
+        # bot.register_next_step_handler(message=question, callback=customMessage)
 
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback(call):
+    """ """
+
+    if call.data == "docs":
+        forceReply()
+        
+
+    if call.data == "image":
+        markup = types.ForceReply(selective=False)
+        q = bot.send_message(admin, "Send me the file:", reply_markup=markup)
+        
+    if call.data == "link":
+        markup = types.ForceReply(selective=False)
+        bot.send_message(admin, "Send me the file:", reply_markup=markup)
+
+    if call.data == "text":
+        markup = types.ForceReply(selective=False)
+        bot.send_message(admin, "Send me the file:", reply_markup=markup)
+        
+    if call.data == 'yes':
+        messageUsers()
+
+    if call.data == 'no':
+        bot.send_message(call.from_user.id, "Thanks for using this service.")
+
+
+def forceReply():
+    markup = types.ForceReply(selective=False)
+    q = bot.send_message(admin, "Send me the file:", reply_markup=markup)
+    bot.register_next_step_handler(message=q, callback=customMessage)
 
 
 def customMessage(msg):
@@ -94,25 +126,10 @@ def customMessage(msg):
     global customText
     
     # Adding keyboard custom replies to keyboard
-    mark_up = types.InlineKeyboardMarkup(row_width=2)
-    a = types.InlineKeyboardButton(text="yes", callback_data='yes')
-    b = types.InlineKeyboardButton(text="no", callback_data='no')
-    mark_up.add(a,b)
-
-    # mark_up = types.InlineReplyKeyboardMarkup()
-    # a = types.InlinekeyboardButton('documents')
-    # b = types.InlinekeyboardButton('images')
-    # c = types.InlinekeyboardButton('links')
-    # d = types.InlinekeyboardButton('text')
-
-    # mark_up.row(a, b)
-    # mark_up.row(c, d)
-
-    # bot.send_message(admin, "Choose one letter:", reply_markup=markup)
-
-    
-
-
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    a = types.InlineKeyboardButton(text="Yes", callback_data='yes')
+    b = types.InlineKeyboardButton(text="No", callback_data='no')
+    keyboard.add(a,b)
 
     # Save custom message
     customText = msg.text 
@@ -121,12 +138,22 @@ def customMessage(msg):
     question = bot.send_message(
         msg.from_user.id,
         f"Do you wish to send '{msg.text}' to all stored users in database?",
-        reply_markup=mark_up
+        reply_markup=keyboard
     )
 
     return customText
 
 
+@bot.callback_query_handler(func=lambda check: True)
+def checktext(check):
+    """ Confirm User's Input"""
+
+
+
+
+
+def messageUsers():
+    """ Sends The Custom Message"""
 
 
 
