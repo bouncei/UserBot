@@ -31,7 +31,15 @@ api_hash = "00a354721554e421af6168db0a972ecf"
 
 admin = 1190069449
 
+lastUpdate = ''
+
+blacklist=[]
+
 customText = ''
+
+customDocument = ''
+
+customImage = ''
 
 bot = TeleBot(token=bot_token)
 
@@ -53,23 +61,19 @@ def start(message):
 
 
 
-# Echos back message to the user
-# @bot.message_handler(func=lambda message: True)
-# def echo_all(message):
-#     """Echoes all incoming text messages back to the sender"""
-#     bot.reply_to(message, message.text)
 
-@bot.message_handler(commands=['bulk'])
-def bulk(message):
-    """ Sending Large Text Messages """
 
-    large_text = open("New Text Document.txt", "rb").read()
+# @bot.message_handler(commands=['bulk'])
+# def bulk(message):
+#     """ Sending Large Text Messages """
 
-    # Split the bulk text each 3000 characters and return a list with splitted text.
-    split_text = util.split_string(large_text, 3000)
+#     large_text = open("New Text Document.txt", "rb").read()
 
-    for text in split_text:
-        bot.reply_to(message, text)
+#     # Split the bulk text each 3000 characters and return a list with splitted text.
+#     split_text = util.split_string(large_text, 3000)
+
+#     for text in split_text:
+#         bot.reply_to(message, text)
 
 
 
@@ -105,38 +109,72 @@ def start(message):
         # bot.register_next_step_handler(message=question, callback=customMessage)
 
 
-@bot.callback_query_handler(func=lambda call: True)
-def callback(call):
-    """ """
-
-    if call.data == "docs":
-        forceReply()
-        
-
-    if call.data == "image":
-        forceReply()
-        
-    if call.data == "link":
-       forceReply()
-
-    if call.data == "text":
-        forceReply()
-        
-    if call.data == 'yes':
-        messageUsers()
-
-    if call.data == 'no':
-        bot.send_message(call.from_user.id, "Thanks for using this service.")
 
 
-def forceReply():
-    markup = types.ForceReply(selective=False)
-    q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
-    bot.register_next_step_handler(message=q, callback=customMessage)
+# def forceReply():
+#     markup = types.ForceReply(selective=False)
+#     q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
+#     bot.register_next_step_handler(message=q, callback=customMessage)
+
+
+def customDoc(msg):
+    """Confirming Custom Document """
+    
+    global customDocument
+
+    # Adding keyboard custom replies to keyboard
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    a = types.InlineKeyboardButton(text="Yes", callback_data='yes')
+    b = types.InlineKeyboardButton(text="No", callback_data='no')
+    keyboard.add(a,b)
+
+    # Saving Custom Document
+    customDocument = msg.document
+    print(customDocument)
+    print(customDocument.file_id)
+
+    # Ask Admin Confirmation to Send Document 
+    question = bot.send_message(
+        msg.from_user,
+        f"Do you wish to send {customDocument.file_name} to all stored users in the database?",
+        reply_markup=keyboard
+    )
+
+    return customDocument
+
+    pass
+
+
+def customImg(msg):
+    """Confirming Custom Image """
+    
+    global customImage
+
+    # Adding keyboard custom replies to keyboard
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    a = types.InlineKeyboardButton(text="Yes", callback_data='yes')
+    b = types.InlineKeyboardButton(text="No", callback_data='no')
+    keyboard.add(a,b)
+
+    # Saving Custom Document
+    customDocument = msg.text
+
+    # Ask Admin Confirmation to Send Document 
+    question = bot.send_message(
+        msg.from_user,
+        f"Do you wish to send {msg.text} to all stored users in the database?",
+        reply_markup=keyboard
+    )
+
+    # return customDocument
+    pass
+
+
+
 
 
 def customMessage(msg):
-    """Confirming Custom Message"""
+    """Confirming Custom Text/Link"""
 
     global customText
     
@@ -147,23 +185,65 @@ def customMessage(msg):
     keyboard.add(a,b)
 
     # Save custom message
-    customText = msg.get_file()
+    if len(msg.text) > 5000: #sending large messages
+        split_text = util.split_string(customText, 3000) # Split the text each 3000 characters, split_string returns a list with the splitted text.
+        for text in split_text:
+            customText = text
+
+    else:
+        customText = msg.text
     
-    print(customText)
+    
 
     # Send Question
     question = bot.send_message(
         msg.from_user.id,
-        f"Do you wish to send '{msg.document('file_name')}' to all stored users in database?",
+        f"Do you wish to send '{msg.text}' to all stored users in database?",
         reply_markup=keyboard
     )
 
     return customText
 
 
-@bot.callback_query_handler(func=lambda check: True)
-def checktext(check):
-    """ Confirm User's Input"""
+
+
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback(call):
+    """ Confirm User's Input """
+
+    if call.data == "docs":
+        markup = types.ForceReply(selective=False)
+        q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
+        bot.register_next_step_handler(message=q, callback=customDoc)
+    
+        
+        
+
+    if call.data == "image":
+        markup = types.ForceReply(selective=False)
+        q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
+        bot.register_next_step_handler(message=q, callback=customImg)
+        
+        
+    if call.data == "link":
+        markup = types.ForceReply(selective=False)
+        q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
+        bot.register_next_step_handler(message=q, callback=customMessage)
+       
+
+    if call.data == "text":
+        markup = types.ForceReply(selective=False)
+        q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
+        bot.register_next_step_handler(message=q, callback=customMessage)
+
+        
+    if call.data == 'yes':
+        messageUsers()
+
+    if call.data == 'no':
+        bot.send_message(call.from_user.id, "Thanks for using this service.")
 
 
 
@@ -172,26 +252,55 @@ def checktext(check):
 def messageUsers():
     """ Sends The Custom Message"""
 
+    global lastUpdate
+    runTime = time.localtime()
+    # Updating admin on last time messages were sent
+    lastUpdate = f"A Custom Message was last sent on {runTime.tm_mday}/{runTime.tm_mon}/{runTime.tm_year}."
+
+    # Send Custom Message
+    bot.send_chat_action(admin, action='typing')
+    bot.send_message(admin, "Your custom message is being sent to users in the database.")
+
+    # Iterating through the list of users and send message
+    database = sheet.get_all_records()
+    [bot.send_message(admin, f"{data} {customText} ----- Reply “Unsubsribe” to Unsubscribe from this servie.") for data in database if data not in blacklist]
+
+    # Custom Message Sent Successful
+    bot.send_message(admin, "Successfully sent to all Users in the Database.")
+
+
+    return lastUpdate
 
 
 
+@bot.message_handler(commands=['status'])
+def status(msg):
+    """ Displays Record of Most Recent Action """
+
+    if msg.from_user.id != admin:
+        bot.reply_to(msg, "Unauthorized User!")
+
+    else:
+        bot.reply_to(msg, lastUpdate)
+        
 
 
-    
+@bot.message_handler(commands=['Unsubscribe'])
+def unsubscribe(msg):
+    """Unsubscribe The User From Receiving Messages"""
 
+    global blacklist
 
+    user = msg.from_user.id
 
+    # Add user to blacklist
+    if user not in blacklist:
+        blacklist.append(user)
 
+    # Send to User
+    bot.send_message(user, "You have successfully unsubsribed from this service!")
 
-
-
-
-
-
-
-# user = bot.get_me()
-# print(user)
-
+    return blacklist
 
 
 

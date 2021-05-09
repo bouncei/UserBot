@@ -48,3 +48,5 @@ INFO: 05/05/2021 01:03:18 Stopped polling.
 DEBUG: 05/05/2021 01:03:29 The server returned: 'b'{"ok":true,"result":[]}''
 DEBUG: 05/05/2021 01:03:29 Received 0 new updates
 DEBUG: 05/05/2021 01:03:29 Task complete
+ERROR: 05/09/2021 09:41:51 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 09:43:18 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
