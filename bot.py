@@ -19,6 +19,9 @@ import telebot
 from telebot import TeleBot, util, types
 import logging
 import time
+import requests
+import json
+import pprint
 
 
 ### Define Variables ###
@@ -44,6 +47,8 @@ customImage = ''
 bot = TeleBot(token=bot_token)
 
 
+
+
 # Setup Logging
 logger = telebot.logger
 # telebot.logger.setLevel(logging.DEBUG)  # Outputs debug messages to console.
@@ -59,21 +64,6 @@ def start(message):
     bot.reply_to(message, f'Hey, welcome {user.first_name}.')
 
 
-
-
-
-
-# @bot.message_handler(commands=['bulk'])
-# def bulk(message):
-#     """ Sending Large Text Messages """
-
-#     large_text = open("New Text Document.txt", "rb").read()
-
-#     # Split the bulk text each 3000 characters and return a list with splitted text.
-#     split_text = util.split_string(large_text, 3000)
-
-#     for text in split_text:
-#         bot.reply_to(message, text)
 
 
 
@@ -99,7 +89,7 @@ def start(message):
         d = types.InlineKeyboardButton(text="text", callback_data='text')
         mark_up.row(a,b)
         mark_up.row(c, d)
-        quest = bot.send_message(admin, "What would you like send", reply_markup=mark_up)
+        quest = bot.send_message(admin, "What would you like to send today?", reply_markup=mark_up)
 
         # bot.register_next_step_handler(message=quest, callback=customMessage)
 
@@ -129,20 +119,24 @@ def customDoc(msg):
     keyboard.add(a,b)
 
     # Saving Custom Document
-    customDocument = msg.document
-    print(customDocument)
-    print(customDocument.file_id)
+    file = msg.document
+
+    r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={file.file_id}') #Getting the required path information for the file
+    filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
+
+    
+    customDocument = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
+    
+
 
     # Ask Admin Confirmation to Send Document 
     question = bot.send_message(
-        msg.from_user,
-        f"Do you wish to send {customDocument.file_name} to all stored users in the database?",
+        msg.from_user.id,
+        f"Do you wish to send '{file.file_name}' to all stored users in the database?",
         reply_markup=keyboard
     )
 
-    return customDocument
-
-    pass
+    return customDocument 
 
 
 def customImg(msg):
@@ -156,18 +150,38 @@ def customImg(msg):
     b = types.InlineKeyboardButton(text="No", callback_data='no')
     keyboard.add(a,b)
 
-    # Saving Custom Document
-    customDocument = msg.text
+    # Saving Custom Image
+    
+
+    fileID = msg.photo[-1].file_id
+
+    
+
+    r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={fileID}') #Getting the required path information for the file
+    
+    filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
+
+    name = filePath.split("/")[1]
+
+    customImage = bot.download_file(filePath)
+
+    with open('new_file.jpg', 'wb') as new_file:
+        new_file.write(customImage) 
+
+
+    
+    # customImage = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
+
+
 
     # Ask Admin Confirmation to Send Document 
     question = bot.send_message(
-        msg.from_user,
-        f"Do you wish to send {msg.text} to all stored users in the database?",
+        msg.from_user.id,
+        f"Do you wish to send {name} to all stored users in the database?",
         reply_markup=keyboard
     )
 
-    # return customDocument
-    pass
+    return customImage
 
 
 
@@ -261,9 +275,21 @@ def messageUsers():
     bot.send_chat_action(admin, action='typing')
     bot.send_message(admin, "Your custom message is being sent to users in the database.")
 
+
+    # bot.send_message(1804753795, customDocument)
+    bot.send_photo(1804753795, photo=open('new_file.jpg', 'rb'))
+    # bot.send_message(1804753795, customImage)
+    # bot.send_message(1804753795, customMessage)
+    
+
+
+
+
+
+
     # Iterating through the list of users and send message
-    database = sheet.get_all_records()
-    [bot.send_message(admin, f"{data} {customText} ----- Reply “Unsubsribe” to Unsubscribe from this servie.") for data in database if data not in blacklist]
+    # database = sheet.get_all_records()
+    # [bot.send_message(admin, f"{data} {customText} ----- Reply “Unsubsribe” to Unsubscribe from this servie.") for data in database if data not in blacklist]
 
     # Custom Message Sent Successful
     bot.send_message(admin, "Successfully sent to all Users in the Database.")

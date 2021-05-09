@@ -50,3 +50,21 @@ DEBUG: 05/05/2021 01:03:29 Received 0 new updates
 DEBUG: 05/05/2021 01:03:29 Task complete
 ERROR: 05/09/2021 09:41:51 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
 ERROR: 05/09/2021 09:43:18 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 12:28:07 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 12:45:18 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 01:01:35 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 01:02:27 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 01:11:15 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 01:12:17 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message text is empty
+ERROR: 05/09/2021 01:17:33 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 01:21:06 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 03:03:28 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message text is empty
+ERROR: 05/09/2021 03:03:35 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message text is empty
+ERROR: 05/09/2021 03:29:29 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/09/2021 05:08:32 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message text is empty
+ERROR: 05/09/2021 05:08:47 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message text is empty
+ERROR: 05/09/2021 05:10:29 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message text is empty
+ERROR: 05/09/2021 05:25:06 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: strings must be encoded in UTF-8
+ERROR: 05/09/2021 05:28:28 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: strings must be encoded in UTF-8
+ERROR: 05/09/2021 05:35:32 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: strings must be encoded in UTF-8
+ERROR: 05/09/2021 05:40:07 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: failed to get HTTP URL content
