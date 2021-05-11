@@ -22,7 +22,13 @@ import time
 import requests
 import json
 import pprint
+import csv
+import pandas as pd
 
+# Setup Logging
+logger = telebot.logger
+# telebot.logger.setLevel(logging.DEBUG)  # Outputs debug messages to console.
+logging.basicConfig(filename='Log_file.log', format='%(levelname)s: %(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S') # saves debug messages in a file(Log_file.log)
 
 ### Define Variables ###
 
@@ -46,13 +52,16 @@ customImage = ''
 
 bot = TeleBot(token=bot_token)
 
+database = []
+
+with open('Test.csv', 'r') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        database.append(row['USERID'])
 
 
 
-# Setup Logging
-logger = telebot.logger
-# telebot.logger.setLevel(logging.DEBUG)  # Outputs debug messages to console.
-logging.basicConfig(filename='Log_file.log', format='%(levelname)s: %(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S') # saves debug messages in a file(Log_file.log)
+
 
 
 
@@ -101,17 +110,13 @@ def start(message):
 
 
 
-# def forceReply():
-#     markup = types.ForceReply(selective=False)
-#     q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
-#     bot.register_next_step_handler(message=q, callback=customMessage)
 
 
 def customDoc(msg):
     """Confirming Custom Document """
     
     global customDocument
-
+    
     # Adding keyboard custom replies to keyboard
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     a = types.InlineKeyboardButton(text="Yes", callback_data='yes')
@@ -119,24 +124,41 @@ def customDoc(msg):
     keyboard.add(a,b)
 
     # Saving Custom Document
-    file = msg.document
+    if msg.document:
 
-    r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={file.file_id}') #Getting the required path information for the file
-    filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
+        file = msg.document
+
+        r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={file.file_id}') #Getting the required path information for the file
+        filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
+
+        
+        # customDocument = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
+
+        downloadDoc = bot.download_file(filePath)
+
+        with open('new_doc.pdf', 'wb') as new_file:
+            new_file.write(downloadDoc)  
+
+        customDocument = open('new_doc.pdf', 'rb')
+
+
+
+        # Ask Admin Confirmation to Send Document 
+        question = bot.send_message(
+            msg.from_user.id,
+            f"Do you wish to send '{file.file_name}' to all stored users in the database?",
+            reply_markup=keyboard
+        )
+
+    else:
+        bot.reply_to(msg, "Wrong input, expected a pdf file. Please send the command(/contentmessage) again.")
+        pass
+            
 
     
-    customDocument = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
-    
 
 
-    # Ask Admin Confirmation to Send Document 
-    question = bot.send_message(
-        msg.from_user.id,
-        f"Do you wish to send '{file.file_name}' to all stored users in the database?",
-        reply_markup=keyboard
-    )
-
-    return customDocument 
+    return customDocument
 
 
 def customImg(msg):
@@ -150,36 +172,41 @@ def customImg(msg):
     b = types.InlineKeyboardButton(text="No", callback_data='no')
     keyboard.add(a,b)
 
-    # Saving Custom Image
-    
+    if msg.photo:
 
-    fileID = msg.photo[-1].file_id
+        # Saving Custom Image   
+        fileID = msg.photo[-1].file_id
 
-    
+        
 
-    r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={fileID}') #Getting the required path information for the file
-    
-    filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
+        r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={fileID}') #Getting the required path information for the file
+        
+        filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
 
-    name = filePath.split("/")[1]
+        name = filePath.split("/")[1]
 
-    customImage = bot.download_file(filePath)
+        downloadImg = bot.download_file(filePath)
 
-    with open('new_file.jpg', 'wb') as new_file:
-        new_file.write(customImage) 
+        with open('new_file.jpg', 'wb') as new_file:
+            new_file.write(downloadImg) 
+
+        customImage = open('new_file.jpg', 'rb')
+        
+        # customImage = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
 
 
-    
-    # customImage = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
 
+        # Ask Admin Confirmation to Send Document 
+        question = bot.send_message(
+            msg.from_user.id,
+            f"Do you wish to send {name} to all stored users in the database?",
+            reply_markup=keyboard
+        )
 
+    else:
+        bot.reply_to(msg, "Wrong input, expected an image file. Please send the command(/contentmessage) again.")
 
-    # Ask Admin Confirmation to Send Document 
-    question = bot.send_message(
-        msg.from_user.id,
-        f"Do you wish to send {name} to all stored users in the database?",
-        reply_markup=keyboard
-    )
+        pass
 
     return customImage
 
@@ -220,6 +247,12 @@ def customMessage(msg):
 
 
 
+def forceReply():
+    markup = types.ForceReply(selective=False)
+    q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
+    
+    return q #return a force reply question to admin
+
 
 
 
@@ -227,30 +260,27 @@ def customMessage(msg):
 def callback(call):
     """ Confirm User's Input """
 
+    # check if the input is a document
     if call.data == "docs":
-        markup = types.ForceReply(selective=False)
-        q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
-        bot.register_next_step_handler(message=q, callback=customDoc)
+        
+        bot.register_next_step_handler(message=forceReply(), callback=customDoc)
     
         
         
-
+    # check if the input is an image
     if call.data == "image":
-        markup = types.ForceReply(selective=False)
-        q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
-        bot.register_next_step_handler(message=q, callback=customImg)
         
+        bot.register_next_step_handler(message=forceReply(), callback=customImg)
         
+    # check if the input is a link
     if call.data == "link":
-        markup = types.ForceReply(selective=False)
-        q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
-        bot.register_next_step_handler(message=q, callback=customMessage)
+        
+        bot.register_next_step_handler(message=forceReply(), callback=customMessage)
        
-
+    # check if the input is a text message
     if call.data == "text":
-        markup = types.ForceReply(selective=False)
-        q = bot.send_message(admin, "Send me the message:", reply_markup=markup)
-        bot.register_next_step_handler(message=q, callback=customMessage)
+        
+        bot.register_next_step_handler(message=forceReply(), callback=customMessage)
 
         
     if call.data == 'yes':
@@ -275,21 +305,24 @@ def messageUsers():
     bot.send_chat_action(admin, action='typing')
     bot.send_message(admin, "Your custom message is being sent to users in the database.")
 
+    # if customDoc:
+    #     # bot.send_document(1804753795, customDocument)
+    #     [bot.send_document(f"{data}", customDocument) for data in database if data not in blacklist]
 
-    # bot.send_message(1804753795, customDocument)
-    bot.send_photo(1804753795, photo=open('new_file.jpg', 'rb'))
-    # bot.send_message(1804753795, customImage)
-    # bot.send_message(1804753795, customMessage)
+    if customImage:
+        [bot.send_photo(f"{data}", customImage) for data in database if data not in blacklist]
+
+    elif customMessage:
+        [bot.send_message(f"{data}", f"{customText}  ----- Reply “Unsubsribe” to Unsubscribe from this servie. ") for data in database if data not in blacklist]
+
+
+    else:
+        bot.send_message(admin, "Wrong Input")
+
+    
     
 
 
-
-
-
-
-    # Iterating through the list of users and send message
-    # database = sheet.get_all_records()
-    # [bot.send_message(admin, f"{data} {customText} ----- Reply “Unsubsribe” to Unsubscribe from this servie.") for data in database if data not in blacklist]
 
     # Custom Message Sent Successful
     bot.send_message(admin, "Successfully sent to all Users in the Database.")
