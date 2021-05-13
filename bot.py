@@ -24,6 +24,9 @@ import json
 import pprint
 import csv
 import pandas as pd
+from flask import Flask, request
+import os
+
 
 # Setup Logging
 logger = telebot.logger
@@ -53,6 +56,8 @@ customDocument = ''
 customImage = ''
 
 bot = TeleBot(token=bot_token)
+
+server = Flask(__name__)
 
 
 with open('Test.csv', 'r') as file:
@@ -350,7 +355,21 @@ def unsubscribe(msg):
 # Keep bot live
 print("Bot running.....")
 
-bot.polling(none_stop=True)
-while True:
-    pass
+@sever.route('/' + bot_token, methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
+
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url='https://glacial-sea-44368.herokuapp.com/' + bot_token)
+    return "!", 200https://glacial-sea-44368.herokuapp.com/
+
+
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+
+
+
 
