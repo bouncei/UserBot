@@ -44,7 +44,7 @@ lastUpdate = ''
 
 blacklist=[]
 
-large_text = []
+database = []
 
 customText = ''
 
@@ -54,7 +54,6 @@ customImage = ''
 
 bot = TeleBot(token=bot_token)
 
-database = []
 
 with open('Test.csv', 'r') as file:
     reader = csv.DictReader(file)
@@ -76,14 +75,14 @@ def start(message):
 
     else:
         bot.reply_to(message, "Hello Dave.")
-        time.sleep(1)
+        
 
         text = "What would you like to send today?"
         mark_up = types.InlineKeyboardMarkup(row_width=2)
         a = types.InlineKeyboardButton(text="Document", callback_data='docs')
         b = types.InlineKeyboardButton(text="Image", callback_data='image')
         c = types.InlineKeyboardButton(text="Link", callback_data='link')
-        d = types.InlineKeyboardButton(text="text", callback_data='text')
+        d = types.InlineKeyboardButton(text="Text", callback_data='text')
         mark_up.row(a,b)
         mark_up.row(c, d)
         quest = bot.send_message(admin, "What would you like to send today?", reply_markup=mark_up)
@@ -202,7 +201,7 @@ def customMessage(msg):
     """Confirming Custom Text/Link"""
 
     global customText
-    global large_text
+
     
     # Adding keyboard custom replies to keyboard
     keyboard = types.InlineKeyboardMarkup(row_width=2)
@@ -211,25 +210,8 @@ def customMessage(msg):
     keyboard.add(a,b)
 
     if msg.text:
-
-
-
         # Save custom message
-        if len(str(msg.text)) > 5000: #sending large messages
-            text_file = open('large_text.txt', 'w')
-            n = text_file.write(msg.text)
-            text_file.close()
-
-            # large_text = open('large_text.txt', 'rb').read()
-            split_text = util.split_string(msg.text, 3000) # Split the text each 3000 characters, split_string returns a list with the splitted text.
-            
-            for text in split_text:
-                large_text.append(text)
-                print(len(large_text))
-                
-
-        else:
-            customText = msg.text
+        customText = msg.text
         
         
         time.sleep(1)
@@ -265,14 +247,13 @@ def callback(call):
 
     # check if the input is a document
     if call.data == "docs":
-        time.sleep(1)
         bot.register_next_step_handler(message=forceReply(), callback=customDoc)
     
         
         
     # check if the input is an image
     if call.data == "image":
-        time.sleep(1)
+
         bot.register_next_step_handler(message=forceReply(), callback=customImg)
         
     # check if the input is a link
@@ -282,7 +263,6 @@ def callback(call):
        
     # check if the input is a text message
     if call.data == "text":
-        time.sleep(1)
         bot.register_next_step_handler(message=forceReply(), callback=customMessage)
 
         
@@ -309,14 +289,13 @@ def messageUsers():
     bot.send_message(admin, "Your custom message is being sent to users in the database.")
 
     if customDocument:
-        # bot.send_document(1804i753795, customDocument)
+    
         [bot.send_document(f"{data}", customDocument) for data in database if data not in blacklist]
 
    
 
-    elif customText:
-        for text in large_text:
-            [bot.send_message(f"{data}", text) for data in database if data not in blacklist]
+    elif customText:    
+        [bot.send_message(f"{data}", customText) for data in database if data not in blacklist]
 
 
     else:
@@ -370,7 +349,6 @@ def unsubscribe(msg):
 
 # Keep bot live
 print("Bot running.....")
-print(len(large_text))
 
 bot.polling(none_stop=True)
 while True:
