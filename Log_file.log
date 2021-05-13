@@ -80,3 +80,10 @@ ERROR: 05/11/2021 03:27:55 A request to the Telegram API was unsuccessful. Error
 ERROR: 05/11/2021 03:29:18 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: there is no document in the request
 ERROR: 05/11/2021 03:30:27 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: there is no document in the request
 ERROR: 05/11/2021 03:32:39 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/12/2021 10:00:06 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: there is no document in the request
+ERROR: 05/12/2021 10:02:03 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: there is no document in the request
+ERROR: 05/12/2021 10:06:12 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/12/2021 10:06:37 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/12/2021 10:13:17 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/12/2021 10:14:25 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: there is no photo in the request
+ERROR: 05/13/2021 04:14:33 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message is too long
