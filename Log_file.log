@@ -89,3 +89,21 @@ ERROR: 05/12/2021 10:14:25 A request to the Telegram API was unsuccessful. Error
 ERROR: 05/13/2021 04:14:33 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message is too long
 ERROR: 05/13/2021 02:31:55 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message is too long
 ERROR: 05/13/2021 02:33:54 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message is too long
+ERROR: 05/13/2021 05:26:05 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/13/2021 05:28:12 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/13/2021 05:29:08 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/13/2021 05:35:38 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/13/2021 05:40:06 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/13/2021 05:40:40 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat not found
+ERROR: 05/13/2021 05:41:36 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/13/2021 05:42:56 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/13/2021 05:48:46 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/13/2021 05:50:26 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: wrong URL host
+ERROR: 05/13/2021 05:51:56 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/13/2021 05:57:50 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: there is no document in the request
+ERROR: 05/13/2021 05:58:50 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: file must be non-empty
+ERROR: 05/13/2021 06:56:07 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: there is no photo in the request
+ERROR: 05/13/2021 07:04:43 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: wrong HTTP URL specified
+ERROR: 05/13/2021 07:05:27 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: wrong HTTP URL specified
+ERROR: 05/13/2021 08:11:35 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: wrong remote file identifier specified: Wrong padding in the string
+ERROR: 05/13/2021 08:38:28 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message text is empty

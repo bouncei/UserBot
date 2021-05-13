@@ -13,35 +13,8 @@
 
 ############################################################################################################################################################################
 
+from config import *
 
-# Importing the needed variables
-import telebot
-from telebot import TeleBot, util, types
-import logging
-import time
-import requests
-import json
-import pprint
-import csv
-import pandas as pd
-from flask import Flask, request
-import os
-
-
-# Setup Logging
-logger = telebot.logger
-# telebot.logger.setLevel(logging.DEBUG)  # Outputs debug messages to console.
-logging.basicConfig(filename='Log_file.log', format='%(levelname)s: %(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S') # saves debug messages in a file(Log_file.log)
-
-### Define Variables ###
-
-bot_token = "1727697640:AAERXgE0dkMYVgAzVP-AgRr97MVuuDK4DJg"
-
-api_id = "1896641"
-
-api_hash = "00a354721554e421af6168db0a972ecf"
-
-admin = 1190069449
 
 lastUpdate = ''
 
@@ -53,17 +26,16 @@ customText = ''
 
 customDocument = ''
 
+fileName = ''
+
 customImage = ''
 
-bot = TeleBot(token=bot_token)
 
-server = Flask(__name__)
-
-
-with open('Test.csv', 'r') as file:
+with open('Test.csv', 'r', encoding="utf8") as file:
     reader = csv.DictReader(file)
     for row in reader:
         database.append(row['USERID'])
+
 
 
 
@@ -156,48 +128,80 @@ def customImg(msg):
 
     # Adding keyboard custom replies to keyboard
     keyboard = types.InlineKeyboardMarkup(row_width=2)
-    a = types.InlineKeyboardButton(text="Yes", callback_data='yes')
+    a = types.InlineKeyboardButton(text="Yes", callback_data='yea')
     b = types.InlineKeyboardButton(text="No", callback_data='no')
     keyboard.add(a,b)
 
-    if msg.photo:
+    if msg.content_type != "text":
 
-        # Saving Custom Image   
-        fileID = msg.photo[-1].file_id
-
-        
-
-        r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={fileID}') #Getting the required path information for the file
-        
-        filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
-
-        name = filePath.split("/")[1]
-
-        downloadImg = bot.download_file(filePath)
-
-        with open('new_file.jpg', 'wb') as new_file:
-            new_file.write(downloadImg) 
-
-        customImage = open('new_file.jpg', 'rb')
-        
-        # customImage = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
-
-
-        time.sleep(1)
+        file = download_attachment(msg.photo)
+        customImage = open(f"images/{fileName}", "rb").read()
         # Ask Admin Confirmation to Send Document 
         question = bot.send_message(
             msg.from_user.id,
-            f"Do you wish to send {name} to all stored users in the database?",
+            f"Do you wish to send this {fileName} to all stored users in the database?",
             reply_markup=keyboard
         )
-
+        
     else:
         bot.reply_to(msg, "Wrong input, expected an image file. Please send the command(/contentmessage) again.")
-
         pass
 
-    return customImage
 
+    
+    return customImage
+        
+    # Saving Custom Image   
+        
+        
+    #     fileID = msg.photo[-1].file_id
+
+        
+
+    #     r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={fileID}') #Getting the required path information for the file
+        
+    #     filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
+
+    #     name = filePath.split("/")[1]
+
+    #     downloadImg = bot.download_file(filePath)
+
+    #     with open('new_file.jpg', 'wb') as new_file:
+    #         new_file.write(downloadImg) 
+
+    #     customImage = open('new_file.jpg', 'rb')
+        
+    #     # customImage = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
+
+
+    #     time.sleep(1)
+    #     # Ask Admin Confirmation to Send Document 
+    #     question = bot.send_message(
+    #         msg.from_user.id,
+    #         f"Do you wish to send {name} to all stored users in the database?",
+    #         reply_markup=keyboard
+    #     )
+
+    # else:
+    #     bot.reply_to(msg, "Wrong input, expected an image file. Please send the command(/contentmessage) again.")
+
+    #     pass
+
+    # return customImage
+
+def download_attachment(img):
+    "Downloads the Attached Image File To Source Directory So It Can Be Reused"
+    global fileName
+    
+    file_id = img[0].file_id
+
+    file_url = bot.get_file_url(file_id)
+    fileName = file_url.split("/")[-1]
+
+    #Download image
+    image = requests.get(file_url, allow_redirects=True)
+    open(f"images/{fileName}", "wb").write(image.content)
+    return fileName
 
 
 
@@ -214,7 +218,7 @@ def customMessage(msg):
     b = types.InlineKeyboardButton(text="No", callback_data='no')
     keyboard.add(a,b)
 
-    if msg.text:
+    if msg.content_type == "text":
         # Save custom message
         customText = msg.text
         
@@ -274,11 +278,36 @@ def callback(call):
     if call.data == 'yes':
         messageUsers()
 
+    if call.data == "yea":
+        imageUsers()
+
     if call.data == 'no':
         bot.send_message(call.from_user.id, "Thanks for using this service.")
 
 
-    
+def imageUsers():
+    """ Sends The Custom Image """
+
+    global lastUpdate
+    runTime = time.localtime()
+
+    # Updating admin on last time messages were sent
+    lastUpdate = f"A Custom Message was last sent on {runTime.tm_mday}/{runTime.tm_mon}/{runTime.tm_year}."
+
+    # Send Custom Message
+    bot.send_chat_action(admin, action='typing')
+    bot.send_message(admin, "Your custom message is being sent to users in the database.")
+
+    [bot.send_photo(f"{data}", customImage) for data in database if data not in blacklist]
+
+    # Custom Image Sent Successful
+    bot.send_message(admin, "Successfully sent to all Users in the Database.")
+
+
+
+    return lastUpdate
+
+
 
 
 def messageUsers():
@@ -293,30 +322,19 @@ def messageUsers():
     bot.send_chat_action(admin, action='typing')
     bot.send_message(admin, "Your custom message is being sent to users in the database.")
 
-    if customDocument:
-    
-        [bot.send_document(f"{data}", customDocument) for data in database if data not in blacklist]
 
-   
-
-    elif customText:    
-        [bot.send_message(f"{data}", customText) for data in database if data not in blacklist]
-
-
-    else:
-        [bot.send_photo(f"{data}", customImage) for data in database if data not in blacklist]
+  
+    [bot.send_message(f"{data}", customText) for data in database if data not in blacklist]
 
     
-    
-
 
 
     # Custom Message Sent Successful
     bot.send_message(admin, "Successfully sent to all Users in the Database.")
 
 
-    return lastUpdate
 
+    return lastUpdate
 
 
 @bot.message_handler(commands=['status'])
@@ -355,20 +373,27 @@ def unsubscribe(msg):
 # Keep bot live
 print("Bot running.....")
 
-@sever.route('/' + bot_token, methods=['POST'])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
-
-@server.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url='https://glacial-sea-44368.herokuapp.com/' + bot_token)
-    return "!", 200https://glacial-sea-44368.herokuapp.com/
+bot.polling(none_stop=True)
+while True:
+    pass
 
 
-if __name__ == "__main__":
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+
+
+# @server.route('/' + bot_token, methods=['POST'])
+# def getMessage():
+#     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+#     return "!", 200
+
+# @server.route("/")
+# def webhook():
+#     bot.remove_webhook()
+#     bot.set_webhook(url='https://glacial-sea-44368.herokuapp.com/' + bot_token)
+#     return "!", 200
+
+
+# if __name__ == "__main__":
+#     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
 
 
