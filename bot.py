@@ -24,7 +24,6 @@ import json
 import pprint
 import csv
 import pandas as pd
-from telebot.apihelper import leave_chat
 
 # Setup Logging
 logger = telebot.logger
@@ -221,13 +220,12 @@ def customMessage(msg):
             n = text_file.write(msg.text)
             text_file.close()
 
-            large_text = open('large_text.txt', 'rb').read()
-            split_text = util.split_string(large_text, 3000) # Split the text each 3000 characters, split_string returns a list with the splitted text.
+            # large_text = open('large_text.txt', 'rb').read()
+            split_text = util.split_string(msg.text, 3000) # Split the text each 3000 characters, split_string returns a list with the splitted text.
             
             for text in split_text:
                 large_text.append(text)
-
-            return large_text
+                print(len(large_text))
                 
 
         else:
@@ -248,7 +246,7 @@ def customMessage(msg):
         pass
 
 
-    return customText, large_text
+    return customText
 
 
 
@@ -316,7 +314,7 @@ def messageUsers():
 
    
 
-    elif customMessage:
+    elif customText:
         for text in large_text:
             [bot.send_message(f"{data}", text) for data in database if data not in blacklist]
 
@@ -372,6 +370,7 @@ def unsubscribe(msg):
 
 # Keep bot live
 print("Bot running.....")
+print(len(large_text))
 
 bot.polling(none_stop=True)
 while True:
