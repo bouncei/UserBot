@@ -107,3 +107,110 @@ ERROR: 05/13/2021 07:04:43 A request to the Telegram API was unsuccessful. Error
 ERROR: 05/13/2021 07:05:27 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: wrong HTTP URL specified
 ERROR: 05/13/2021 08:11:35 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: wrong remote file identifier specified: Wrong padding in the string
 ERROR: 05/13/2021 08:38:28 A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: message text is empty
+ERROR: 05/14/2021 12:44:42 ApiException occurred, args=('A request to the Telegram API was unsuccessful. The server returned HTTP 400 Bad Request. Response body:\n[b\'{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}\']',)
+Traceback (most recent call last):
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\util.py", line 62, in run
+    task(*args, **kwargs)
+  File "bot.py", line 192, in callback
+    messageUsers()
+  File "bot.py", line 240, in messageUsers
+    [bot.send_message(f"{data}", customText) for data in database if data not in blacklist]
+  File "bot.py", line 240, in <listcomp>
+    [bot.send_message(f"{data}", customText) for data in database if data not in blacklist]
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 624, in send_message
+    apihelper.send_message(self.token, chat_id, text, disable_web_page_preview, reply_to_message_id,
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 159, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 65, in _make_request
+    return _check_result(method_name, result)['result']
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 84, in _check_result
+    raise ApiException(msg, method_name, result)
+telebot.apihelper.ApiException: A request to the Telegram API was unsuccessful. The server returned HTTP 400 Bad Request. Response body:
+[b'{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}']
+
+ERROR: 05/14/2021 12:44:42 A request to the Telegram API was unsuccessful. The server returned HTTP 400 Bad Request. Response body:
+[b'{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}']
+ERROR: 05/14/2021 12:45:47 ApiException occurred, args=('A request to the Telegram API was unsuccessful. The server returned HTTP 400 Bad Request. Response body:\n[b\'{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}\']',)
+Traceback (most recent call last):
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\util.py", line 62, in run
+    task(*args, **kwargs)
+  File "bot.py", line 195, in callback
+    imageUsers()
+  File "bot.py", line 214, in imageUsers
+    [bot.send_photo(f"{data}", customImage) for data in database if data not in blacklist]
+  File "bot.py", line 214, in <listcomp>
+    [bot.send_photo(f"{data}", customImage) for data in database if data not in blacklist]
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 676, in send_photo
+    apihelper.send_photo(self.token, chat_id, photo, caption, reply_to_message_id, reply_markup,
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 295, in send_photo
+    return _make_request(token, method_url, params=payload, files=files, method='post')
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 65, in _make_request
+    return _check_result(method_name, result)['result']
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 84, in _check_result
+    raise ApiException(msg, method_name, result)
+telebot.apihelper.ApiException: A request to the Telegram API was unsuccessful. The server returned HTTP 400 Bad Request. Response body:
+[b'{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}']
+
+ERROR: 05/14/2021 12:45:47 A request to the Telegram API was unsuccessful. The server returned HTTP 400 Bad Request. Response body:
+[b'{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}']
+ERROR: 05/14/2021 12:47:37 ReadTimeout occurred, args=(ReadTimeoutError("HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=30)"),)
+Traceback (most recent call last):
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 426, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 421, in _make_request
+    httplib_response = conn.getresponse()
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\http\client.py", line 1322, in getresponse
+    response.begin()
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\http\client.py", line 303, in begin
+    version, status, reason = self._read_status()
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\http\client.py", line 264, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\socket.py", line 669, in readinto
+    return self._sock.recv_into(b)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 724, in urlopen
+    retries = retries.increment(
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\util\retry.py", line 403, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 428, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 335, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=30)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\util.py", line 62, in run
+    task(*args, **kwargs)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 281, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1), timeout=timeout)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 251, in get_updates
+    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 199, in get_updates
+    return _make_request(token, method_url, params=payload)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 62, in _make_request
+    result = _get_req_session().request(method, request_url, params=params, files=files,
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\adapters.py", line 529, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=30)
+

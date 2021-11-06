@@ -56,69 +56,16 @@ def start(message):
 
         text = "What would you like to send today?"
         mark_up = types.InlineKeyboardMarkup(row_width=2)
-        a = types.InlineKeyboardButton(text="Document", callback_data='docs')
+        
         b = types.InlineKeyboardButton(text="Image", callback_data='image')
         c = types.InlineKeyboardButton(text="Link", callback_data='link')
         d = types.InlineKeyboardButton(text="Text", callback_data='text')
-        mark_up.row(a,b)
+        mark_up.row(b)
         mark_up.row(c, d)
         quest = bot.send_message(admin, "What would you like to send today?", reply_markup=mark_up)
 
         
 
-
-
-
-
-
-def customDoc(msg):
-    """Confirming Custom Document """
-    
-    global customDocument
-    
-    # Adding keyboard custom replies to keyboard
-    keyboard = types.InlineKeyboardMarkup(row_width=2)
-    a = types.InlineKeyboardButton(text="Yes", callback_data='yes')
-    b = types.InlineKeyboardButton(text="No", callback_data='no')
-    keyboard.add(a,b)
-
-    # Saving Custom Document
-    if msg.document:
-
-        file = msg.document
-
-        r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={file.file_id}') #Getting the required path information for the file
-        filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
-
-        
-        # customDocument = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
-
-        downloadDoc = bot.download_file(filePath)
-
-        with open('new_doc.pdf', 'wb') as new_file:
-            new_file.write(downloadDoc)  
-
-        customDocument = open('new_doc.pdf', 'rb')
-
-
-        time.sleep(1)
-        # Ask Admin Confirmation to Send Document 
-        question = bot.send_message(
-            msg.from_user.id,
-            f"Do you wish to send '{file.file_name}' to all stored users in the database?",
-            reply_markup=keyboard
-        )
-
-    else:
-        time.sleep(1)
-        bot.reply_to(msg, "Wrong input, expected a pdf file. Please send the command(/contentmessage) again.")
-        pass
-            
-
-    
-
-
-    return customDocument
 
 
 def customImg(msg):
@@ -144,50 +91,17 @@ def customImg(msg):
         )
         
     else:
-        bot.reply_to(msg, "Wrong input, expected an image file. Please send the command(/contentmessage) again.")
+        bot.reply_to(msg, "Wrong input, expected an image file. Please send the command (/contentmessage) again.")
         pass
 
 
     
+    # Saving Custom Image   
     return customImage
         
-    # Saving Custom Image   
         
         
-    #     fileID = msg.photo[-1].file_id
-
-        
-
-    #     r = requests.get(f'https://api.telegram.org/bot{bot_token}/getFile?file_id={fileID}') #Getting the required path information for the file
-        
-    #     filePath = r.json()['result']['file_path'] # Gets file path in javascript notation
-
-    #     name = filePath.split("/")[1]
-
-    #     downloadImg = bot.download_file(filePath)
-
-    #     with open('new_file.jpg', 'wb') as new_file:
-    #         new_file.write(downloadImg) 
-
-    #     customImage = open('new_file.jpg', 'rb')
-        
-    #     # customImage = (f'https://api.telegram.org/file/bot{bot_token}/{filePath}')
-
-
-    #     time.sleep(1)
-    #     # Ask Admin Confirmation to Send Document 
-    #     question = bot.send_message(
-    #         msg.from_user.id,
-    #         f"Do you wish to send {name} to all stored users in the database?",
-    #         reply_markup=keyboard
-    #     )
-
-    # else:
-    #     bot.reply_to(msg, "Wrong input, expected an image file. Please send the command(/contentmessage) again.")
-
-    #     pass
-
-    # return customImage
+   
 
 def download_attachment(img):
     "Downloads the Attached Image File To Source Directory So It Can Be Reused"
@@ -255,8 +169,7 @@ def callback(call):
     """ Confirm User's Input """
 
     # check if the input is a document
-    if call.data == "docs":
-        bot.register_next_step_handler(message=forceReply(), callback=customDoc)
+    
     
         
         
@@ -383,7 +296,7 @@ while True:
 # @server.route('/' + bot_token, methods=['POST'])
 # def getMessage():
 #     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-#     return "!", 200
+#     return "Your bot is active!", 200
 
 # @server.route("/")
 # def webhook():
