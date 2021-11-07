@@ -10,6 +10,8 @@ def menu(msg):
     mark_up.row(b)
     mark_up.row(c, d)
 
+    return mark_up
+
 
 
 @bot.message_handler(commands=['start'])
