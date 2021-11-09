@@ -1,4 +1,5 @@
 from config import *
+from main.functions import *
 
 def menu(msg):
     mark_up = types.InlineKeyboardMarkup(row_width=2)

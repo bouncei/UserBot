@@ -11,6 +11,29 @@ from flask import Flask, request
 import os
 
 
+
+lastUpdate = ''
+
+blacklist=[]
+
+database = []
+
+customText = ''
+
+customDocument = ''
+
+fileName = ''
+
+customImage = ''
+
+
+with open('Test.csv', 'r', encoding="utf8") as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        database.append(row['USERID'])
+
+
+
 # Setup Logging
 logger = telebot.logger
 # telebot.logger.setLevel(logging.DEBUG)  # Outputs debug messages to console.
